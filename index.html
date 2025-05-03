@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GadgetNest | Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* HEADER STYLING */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: #222;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(135deg, #fff, #f4f4f4);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      background: #ffffffee;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 3px;
+      transition: border-color 0.3s;
+    }
+
+    .logo:hover {
+      border-color: #ffa41c;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #333;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 0;
+      height: 2px;
+      background-color: #ffa41c;
+      transition: width 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    main {
+      padding-top: 100px;
+      padding: 30px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      border-left: 4px solid #ffa41c;
+      padding-left: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      max-width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      color: #111;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      padding: 20px;
+      color: #666;
+      background: #f8f8f8;
+    }
+
+    button.add-btn {
+      background: #ffa41c;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    button.add-btn:hover {
+      background: #f0941d;
+    }
+
+  </style>
+</head>
+<body>
+
+<header id="header">
+  <div class="logo">GadgetNest</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Featured Categories</h2>
+    <div class="grid" id="categories">
+      <div class="card" onclick="goToCategory('laptop')">
+        <img src="images/image.2.webp" alt="Laptops">
+        <h3>Laptops</h3>
+      </div>
+      <div class="card" onclick="goToCategory('phones')">
+        <img src="images/image.3.webp" alt="Phones">
+        <h3>Phones</h3>
+      </div>
+      <div class="card" onclick="goToCategory('accessories')">
+        <img src="images/image.4.webp" alt="Accessories">
+        <h3>Accessories</h3>
+      </div>
+      <div class="card" onclick="goToCategory('earbuds')">
+        <img src="images/image.5.webp" alt="Earbuds">
+        <h3>Earbuds</h3>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Trending Products</h2>
+    <div class="grid" id="products">
+      <div class="card">
+        <img src="images/image-nova.webp" alt="Nova Laptop">
+        <h3>Nova Book X1</h3>
+        <p>$899</p>
+        <button class="add-btn" onclick="addToCart('Nova Book X1', 899, 'images/image-nova.webp')">Add to Cart</button>
+      </div>
+      <div class="card">
+        <img src="images/image.6.webp" alt="Galaxy Buds">
+        <h3>Galaxy Buds Pro</h3>
+        <p>$199</p>
+        <button class="add-btn" onclick="addToCart('Galaxy Buds Pro', 199, 'images/image.6.webp')">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="footer">
+  &copy; 2025 GadgetNest. All rights reserved.
+</div>
+
+<script>
+  function addToCart(name, price, image) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const index = cart.findIndex(item => item.name === name);
+    if (index !== -1) {
+      cart[index].quantity += 1;
+    } else {
+      cart.push({ name, price, image, quantity: 1 });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${name} added to cart`);
+  }
+
+  function goToCategory(category) {
+    localStorage.setItem('selectedCategory', category);
+    window.location.href = "shop.html";
+  }
+
+  // Header scroll effect
+  window.addEventListener("scroll", () => {
+    const header = document.getElementById("header");
+    if (window.scrollY > 30) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+  });
+</script>
+
+</body>
+</html>
